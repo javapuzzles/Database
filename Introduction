@@ -33,7 +33,25 @@ Document Oriented Database Management System
 Relational Database Management System
 Graph Oriented Database Management System etc.
 
-DBMS are followed some pre-defined instruction and rules to manage the information by using DBMS. The instructions are known as SQL.
+RDBMS (Relational Database Management System) 
+---------------------------------------------
+RDBMS is the basis for SQL, and for all modern database systems like MS SQL Server, IBM DB2, Oracle, MySQL, and Microsoft Access. The data in RDBMS is stored in database objects called tables.
+
+A RDBMS stores the data in the form of tables and columns. It is a collections of related data entities and it consists the columns and rows. A table is the category of data, like employees, customers, students, and the columns are information about the category, like name and address etc.
+
+Why we are using RDBMS ?
+-> We are going to store the information in the form of table.
+-> We want to make the relationship between perticular entities. And we know that in RDBMS, entities are called as Table.
+
+It is a type of database management system (DBMS) where the information will be managed in the tabular format. In this type of DBMS, it used to establish the relation between the information available in the multiple tables. So following are some relational databases:
+      -> Oracle
+      -> MySQL Server
+      -> IBM DB2
+      -> MS-Access
+      -> PostGreSQL
+      -> Sybase etc.
+
+RDBMS are followed some pre-defined instruction and rules to manage the information by using DBMS. The instructions are known as SQL.
 
 SQL (Structured Query Language)
 -------------------------------
@@ -49,6 +67,27 @@ It is the language provided by ANSI (American National Standard Institute). ANSI
 -> SQL can create views in a database
 -> SQL can create the sequence
 -> SQL can set permissions on tables, procedures, and views
+
+DATATYPE
+------------
+-> If you want to store some data into the column of the table then you have to specify the datatype for the corresponding column.
+
+-> The datatype can be different from one database to another
+
+MySQL               Oracle 
+-----------------------------
+int                 int
+long                long
+bigint              number, number(m)
+float               float
+doubles             number(m,n)
+char(n)             char(n)
+varchar(n)          varchar(n) (**store 4000 characters)
+text                varchar2(n) (**store 8000 characters)
+date [yyyy-mm-dd]   date [dd-MONTH-yyyy]
+blob/clob           blob/clob
+file                file
+
 
 
 
