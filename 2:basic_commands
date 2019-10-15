@@ -1,0 +1,91 @@
+Creating Database: create database <database_name>;
+
+List Databases: show databases;
+
+Remove database: drop database <database_name>;
+
+To know which database we are using
+------------------------------------
+select database();
+
+Creating the table
+----------------------
+-> To create the table in the specific database, you can write the following statement:
+
+Creating the tables
+--------------------
+Syntax:
+-------
+create table <tableName>(<column1> <datatype> [constraints],<column2> <datatype> [constraints], .....<columnN> <datatype> [constraints]);
+
+ex: create table customers (cid int, cname char(5), cemail char(25), ccity char(10), cadd char(50), dob date);
+
+For Oracle
+------------
+create table students (sid int, sname char(15), email char(25), phone long, fee number(5,3), dob date);
+create table stud2 (id number(3), name char(12), email varchar(15), phone number(11), fee number(10,2), dob date);
+
+
+For MySQL & Oracle
+-------------------
+create table stud1 (id int, name char(12), email varchar(50), phone long, fee float, dob date);
+
+ex: create table student (sid int, sname varchar(15));
+
+For MySQL and Oracle both
+--------------------------
+To release/delete the table, you can write the following statement:
+
+drop table <tableName>; 
+eg: drop table student;
+
+For MySQL
+---------
+If you want to delete multiple table at a time then you can use following statement:
+
+drop table <table_name1>, <table_name2> ...;
+
+eg: drop table stud, cust, add...;
+
+
+Description about the table
+----------------------------
+decribe <table_name>;
+desc <table_name>;
+
+eg:
+describe customers; or desc customers;
+describe students; or desc students;
+describe employees; or desc employees;
+
+Qu:) How can i know about all the tables available in database ? 
+
+For Oracle : select * from tab where tabtype = 'TABLE';
+For MySQL : show tables;
+
+Qu:) How can i see the structure of the table ?
+
+desc <tableName>;
+      desc student;
+
+describe <tableName>;
+      describe student;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
