@@ -1,0 +1,231 @@
+Built-In Fuctions
+--------------------
+When you are inserting or selecting the records from the table then you can use built-in fuctions. Different different database vendors have provided the various pre-defined functions those will help to perform the operation into the database.
+
+There are following types of functions
+-------------------------------------- 
+-> Arithmetic Functions (sqrt,ceil,floor,round,power,mod)
+
+-> String Functions (length,trim,ltrim,rtrim,lpad,rpad, substr,concat,ascii,upper,lower,replace,substring,char,initcap,lcase, ucase)
+
+-> Conversion Functions (str_to_date,to_date,to_char,to_number)
+
+-> Date Functions (sysdate,now,date,time,month,day,year,to_char)
+
+-> Aggregate Functions
+(sum,min,max,avg,count)
+
+SQL SEQUENCE
+--------------
+Sql sequence will be used to generate the value automatically by the database. 
+
+It is an object and it is independent from the table. 
+
+By using the sequence, only the integer value can be generated.
+
+In MySQL you can use one predefined sequence with the name auto_increment.
+
+Auto-increment allows a unique number to be generated when a new record is inserted into a table.
+
+In one table you can define only one column as auto_increment and the column must be defined with any key specification (either unique or primary). 
+
+Generally we would like the value of the primary key field to be created automatically every time when a new record is inserted.
+
+Syntax For MySQL:
+----------------------
+create table persons
+( sid int AUTO_INCREMENT,
+firstName varchar(255) not null,
+lastName varchar(255),
+address varchar(255),
+city varchar(255), PRIMARY KEY (sid) );
+
+MySQL uses the AUTO_INCREMENT keyword to perform an auto-increment feature.
+
+By default, the starting value for AUTO_INCREMENT is 1, and it will be incremented by 1 for each new record. 
+
+To let the AUTO_INCREMENT sequence start with another value, use the following SQL statement:
+
+create table student(sid int primary key auto_increment, sname varchar(15)) auto_increment=101;
+
+-> insert into student(sname) values ('Rahul');
+
+or alter table persons AUTO_INCREMENT = 100;
+
+-> insert into Persons (firstName,lastName) values ('Subrat','Gupta');
+
+-> Here you are inserting the firstName and lastName value as Subrat and Gupta but you are not inserting sid value, so by default value (100) will be inserted by the DB Server when you will insert a new record.
+Ex:
+create table persons (sid int primary key auto_increment, fname varchar(15), lname varchar(15), email varchar(15), city varchar(15));
+
+alter table persons auto_increment=101;
+
+create table persons (sid int primary key auto_increment, fname varchar(15), lname varchar(15), email varchar(25), city varchar(15)) auto_increment=101;
+
+->In Oracle you can create the sequence as per your requirment. You will have to create an auto-increment field with the sequence object (this object generates a number of sequence).
+
+->In Oracle you can create the sequence as per your requirment. You will have to create an auto-increment field with the sequence object (this object generates a number of sequence).
+
+Syntax For Oracle:
+----------------------
+create sequence <seqName>
+[increment by <int_value>
+minvalue <int_value> /nominvalue 
+maxvalue <int_value> /nomaxvalue 
+start with <int_value>
+cache <int_value> /no cache
+cycle /no cycle];
+
+
+eg:  create sequence javapuzzles_seq1
+      minvalue 50
+      start with 101
+       maxvalue 300
+       increment by 5;
+
+      create sequence seq_person
+      minvalue 1
+      start with 1
+      increment by 1
+		cache 10;
+
+When sequence created with some name, you can access following two variable on the sequence object:
+
+<seqName>.currval;
+// javapuzzles_seq1.currval-> returns the current values of the sequence.
+
+<seqName>.nextval;
+// javapuzzles_seq1.nextval-> returns the current values of the sequence and then increases by the given value.
+
+Note:
+-------
+If you are creating the sequence then after creating that you need to use nextval property first time to initiate the sequence.
+
+-> You can drop the sequence at any point of time by using the following syntax:
+drop sequence <seq_name>;
+
+Increment By:
+----------------
+The default value is 1. The possible value is non-zero integral value. If the value is positive then the value will be generated in ascending order, but in the case of negative, the value will be generated in descending order for the sequence.
+
+increment by -2
+
+101 103 105 107 109 111 => 2 steps
+101 99 97 95 93 91 => -2 steps
+
+Descending Sequence
+10 9 8 7 6, ......., -1 (max value)
+
+Ascending 
+(min value) 1 2 ...
+
+MinValue OR MaxValue:
+-----------------------
+It will be used to specify the range of the sequence. By default for ascending sequence the minvalue is one and for descending sequence the maxvalue is -1.
+
+1 -> Ascending Sequence (min value)
+-1 -> Descending Sequence (max value)
+
+Start With:
+-----------
+It will be used to specify the first value that will be generated by using sequence.
+
+-> The default value will be the min value for ascending sequence and the max value for the descending sequence.
+
+-> The default value will be 1 for ascending sequence and -1 for the descending sequence.
+
+-> You can specify the start with value explicitly but it must be in the range of the sequence.
+
+-> Start With value will be used only once, the sequence will be generated. And for next cycle minimum value will be used.
+
+CACHE <int_value>/no cache:
+----------------------------
+When you are creating the sequence then some values will be generated by default.
+
+And those values will be stored into the cache memory. The default cache size will be 20. The minimum cache size, you can specify as 2.
+
+It will generate immidiately when the request for value or initially the value will be generated and will be stored in the cache memory. If you are using nocache then the value will be generated when required.
+
+20 -> 101, 104, 107, 110... (20 values)
+20 -> 101, .... 20 values
+
+CYCLE / no cycle:
+--------------------
+Cycle option is used to regenerate the value by using the sequence, once the limit of the sequence will be reached.
+
+When the sequence is recycle then in the case of ascending sequence, it will start from the min value and in the case of descending sequence it will start from the max value.
+
+Note: If total values of sequence is less than 20 then while using cycle, you have to use the cache/nocache option. But if the total values of sequence is more than 20 then no need to use cache/nocache option with cycle.
+
+Ex:
+----
+1) create sequence seq1;
+create table stud1(sno int,sid int primary key,name varchar(15));
+
+insert into stud1(seq1.nextval,seq1.currval,'XYZ'); or update stud1 set sid = seq1.nextval;
+
+2) create sequence seq2;
+     select seq2.currval from dual; //INVALID
+     select seq2.nextval from dual; //VALID
+     select seq2.currval from dual; //VALID
+
+(INCREMENT BY)
+1) create sequence seq3 increment by 0; //INVALID
+2) create sequence seq4 increment by 3; //VALID (Starting nextval = 3, currval = 3)
+3) create sequence seq5 increment by -3; //VALID (Starting nextval = -3, currval = -3)
+
+(MIN VALUE / MAX VALUE)
+1) create sequence seq6 increment by 3;
+2) create sequence seq7 increment by 3 minvalue 7; (Starting nextval = 7, currval = 7)
+3) create sequence seq8 increment by 3 minvalue 7 maxvalue 16;
+4) create sequence seq9 increment by 3 minvalue -12;
+5) create sequence seq10 increment by -4;
+6) create sequence seq11 increment by -4 maxvalue 17;
+7) create sequence seq12 increment by -4 maxvalue 17 minvalue -23;
+8) create sequence seq13 increment by -4 maxvalue 17 minvalue 23; //INVALID
+
+(START WITH)
+1) create sequence seq13 increment by 3 minvalue 4 start with 2; // INVALID
+2) create sequence seq14 increment by 3 minvalue 4 start with 7;
+3) create sequence seq15 increment by -4 maxvalue 7 start with 15; // INVALID
+4) create sequence seq16 increment by -4 maxvalue 7 start with 5;
+
+(CACHE <int_value> / no cache)
+
+1) create sequence seq17 increment by 5 cache 3;
+2) create sequence seq18 increment by 5 nocache;
+3) create sequence seq19 increment by 5 cache 1; // INVALID
+
+(CYCLE / nocycle)
+
+1) create sequence seq20 increment by 3 minvalue 4 start with 7 maxvalue 24;
+2) create sequence seq21 increment by 3 minvalue 4 start with 7 maxvalue 24 nocache cycle;
+3) create sequence seq22 increment by -4 maxvalue 7 start with 5 minvalue -15 nocache cycle;
+4) create sequence seq23 increment by -4 maxvalue 7 start with 15 minvalue -15 cache 18 cycle; // INVALID
+5) create sequence seq24 increment by 5 minvalue 25 maxvalue 50 cache 5 cycle;
+6) create sequence seq25 increment by -4 maxvalue 7 start with 15 minvalue -125 cache 19 cycle;
+
+Note: If you are using the sequence for any primary key column then you should not use cycle option for that sequence.
+
+cache - 18 values (101 - 118) cycle
+cache - 18 values (101 - 118)
+
+Q23) Displays total number of students ? 
+select count(*) from student;
+
+Q24) Display the total number of fee submitted by students. select count(fee) from student;
+
+Q25) Display the total number of sid of the students? 
+select count(sid) from student;
+
+Q26) Display the maximum fee ? 
+select max(fee) from student;
+
+Q27) Display the average fee ? 
+select avg(fee) from student;
+
+Q28) Display the total fee ?
+select sum(fee) from student;
+
+
+
