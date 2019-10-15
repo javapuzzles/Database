@@ -1,0 +1,172 @@
+USER PREVILIGES
+----------------
+WORKING WITH USER IN DB (**Introduction**) -------------------------------------------
+For Oracle:
+-------------
+create user <userName> identified by <password>;
+
+eg: create user subrat identified by javasree;
+
+After creating the user, you need to provide the privilege to connect with the oracle database.
+
+In oracle, you can provide two types of privileges :
+To ->
+
+   1) System Privilege
+   -------------------
+        a) CONNECT
+        b) CREATE SESSION
+        c) UNLIMITED TABLESPACE
+        d) CREATE TABLE
+        e) CREATE SEQUENCE etc..
+
+provide the privileges you can use following syntax:
+
+-> grant <sysPriv> to <userName>;
+
+If you want to give limited space to the user than you can use following alter command:
+
+alter user <userName> quota <size> on <tableSpaceName>;
+
+-> where size in mb
+-> where tablespace is system
+
+eg: alter user subrat quota 15 on system;
+
+-> If you want to give all the privileges to user then you can use the following syntax
+
+grant all privileges to <userName>;
+eg:
+grant all privileges to javapuzzles;
+
+-> If you want to revoke all privileges from the user then use following syntax
+
+revoke all privileges from <userNm>;
+
+eg:revoke all privileges from javapuzzles;
+
+2) Object Privilege
+   -----------------------
+           a) SELECT
+           b) INSERT
+           c) UPDATE
+           d) DELETE
+           etc..
+grant <objPriv> on <objName> to <userName>;
+
+As System User:
+----------------
+create user subrat identified by subrat; 
+commit;
+
+grant CREATE SESSION to subrat; 
+commit;
+
+grant SELECT,UPDATE on students to subrat; 
+commit;
+
+grant UNLIMITED TABLESPACE to subrat; 
+commit;
+
+grant CREATE TABLE to subrat;
+commit;
+
+As subrat User:
+-------------------
+select * from system.students;
+update system.students set name = 'KISHORE';
+
+Revoking the Privileges: 
+----------------------------- 
+Object Privilege 
+-------------------
+revoke <objPriv> on <objName> from <userName>;
+
+ex: revoke update on students from subrat;
+
+ex: revoke select,delete on students from subrat;
+
+System Privilege 
+--------------------
+revoke <sysPriv> from <userName>;
+
+ex: revoke CREATE TABLE from subrat;
+
+Modifying The Password: 
+-----------------------------
+alter user <userName> identified by <newPass>;
+
+ex: alter user subrat identified by javapuzzles;
+
+To know about user
+-------------------
+show user;
+
+Deleting the User 
+---------------------
+drop user <userName> [cascade];
+
+Note:
+------
+Here cascade is optional. If some table already presents under user domain then you have two option. Either you can use cascade from system domain to delete the user or you can delete the table from user side then no need to use cascade option to delete the user.
+
+For MySQL:
+-------------
+create user '<userName>'@'<hostName>' identified by '<password>';
+
+ex: create user 'subrat'@'localhost' identified by 'javasree';
+
+As Root User:
+---------------
+grant select,update,delete on student to 'subrat'@'localhost';
+
+As subrat User:
+---------------
+select * from b40db.student;
+or
+use b40db;
+select * from student;
+
+Revoking the privileges (From subrat user) ------------------------------------------------ 
+revoke <priv> on <objName> from '<userName>'@'<host>';
+
+ex: revoke select,update,delete on student from 'subrat'@'localhost';
+
+Modifying The Password: (MySQL 5.5)
+----------------------------------- 
+use mysql;
+
+update user set password = PASSWORD('javapuzzles') where user = 'subrat'; flush privileges;
+
+To know about user
+-----------------------
+select user();
+
+Deleting the User 
+--------------------
+drop user '<userName>'@'localhost';
+
+Grant All
+-----------
+-> If you want to give all the privileges to user then you can use the following syntax
+
+grant all on <databaseName>.<tableName> to '<userName>'@'localhost';
+eg:
+grant all on javapuzzlesdb.student to javapuzzles;
+grant all on javapuzzlesdb.* to 'subrat'@'localhost';
+or
+use javapuzzles_db;
+grant all on student to javapuzzles;
+
+-> If you want to revoke all privileges from the user then use following syntax
+
+revoke all on <databaseName>.<tableName> from '<userName>'@'localhost';
+
+eg:
+revoke all on javapuzzlesdb.student from 'javapuzzles'@'localhost';
+
+revoke all on javapuzzlesdb.* from 'javapuzzles'@'localhost';
+
+
+
+
