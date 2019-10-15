@@ -1,0 +1,217 @@
+SQL GROUP BY AND HAVING CLAUSE
+------------------------------
+Group by clause is used to divide the table into various groups based on the specified column value.
+
+We will use to access the information depending on the group created by using the values of specified column. It will not be used to access the whole information of the record. If you are using group by then you need to use some aggregate functions to access the other information.
+
+If you want to filter the group information then you can use 'having' keyword followed by the condition.
+
+With the having keyword you can use only the column that is defined with the group by.
+
+Other column can't be used with the having keyword. If you want to filter the record(rows) then you need to use 'where' keyword with the condition.
+
+Ex:
+---
+For MySQL & Oracle:
+------------------------
+Create one table as follows
+----------------------------
+create table student (sid int,sname varchar(15), email varchar(25), phone long, city varchar(15), state varchar(15),fee float);
+
+// Insert some records and apply the following condition :
+
+
+select sum(fee) from student where city = 'Blore';
+
+select sum(fee) from student where city = 'Lucknow';
+
+select sum(fee) from student where city in ('Bangalore','Chennai'); 
+
+select city, sum(fee) from student group by city;
+select state, sum(fee) from student group by state;
+
+select state, city, sum(fee) from student group by state,city;
+
+select state, city, sum(fee) from student group by state, city having state != 'AP' and city != 'Ameerpet';
+
+select state, city, sum(fee) from student where fee between 12000 and 20000 group by state, city having state != 'AP';
+
+For MySQL:
+-----------
+select city, sum(fee) from student group by city with rollup;
+
+select state, sum(fee) from student group by state with rollup;
+
+select state, city, sum(fee) from student group by state, city with rollup;
+
+For Oracle:
+-------------
+select city,sum(fee) from student group by rollup(city);
+
+select state,sum(fee) from student group by rollup(state);
+
+select state, city, sum(fee) from student group by rollup(state,city);
+
+
+Qu:27) What is the difference b/w where and having clause ?
+
+-> The condition specified in the where clause will be available in each rows of the table whereas condition specified in having clause will be available for each group.
+
+Use 'where' clause to filter the rows and use 'having' clause to filter the groups.
+
+Alter commands in SQL (Altering) 
+---------------------------------
+
+1)Renaming table
+-----------------
+If you want to change the name of the table after creating that then you can use :
+
+Syntax:
+--------
+MySQL
+-------
+rename table <tableName> to <newName>;
+
+Oracle
+-----
+rename table <tableName> to <newName>;
+
+eg:
+---
+MySQL
+------
+create table student(sid int,sname char(10),email varchar(20),phone long);
+
+rename table student to stud;
+
+Oracle
+-------
+rename student to stud;
+
+2)Renaming column
+------------------
+If you want to change the name of the column after creating the table then you can use :
+
+Syntax:
+---------
+Oracle & MySQL
+---------------
+alter table <tableName> rename column <columnName> 
+to <columnName>;
+
+eg:
+create table student(sid int,sname char(10),email varchar(20),phone long);
+
+alter table student rename column sid to cid;
+
+MySQL
+--------
+alter table <tableName> change <oldColName> <newColName> <datatype>;
+
+eg:
+create table student(sid int,sname char(10),email varchar(20),phone long);
+
+alter table student change sid cid varchar(15);
+
+3)Adding column
+----------------
+eg:
+----
+alter table student add(city char(10));
+
+alter table customer add(feepaid float,feebal float);
+
+4)Dropping column 
+-----------------------
+alter table student drop column city; // Both
+
+****alter table customer drop column feepaid,feebal;// MySQL
+
+
+5)Modifying datatype
+---------------------
+Syntax: (For Both)
+----------------------
+alter table <tablename> modify <colName> <datatype>;
+
+eg: create table student (sid int,sname varchar(15),email varchar(15),fee float);
+
+desc student;
+
+alter table student modify fee double; 
+
+desc student;
+
+Note:
+------
+While changing the datatype of the column of table, make sure that records should not be present. But if records are present then whatever datatype you want to specify that should be assignment compatable.
+
+6)Adding Primary key
+---------------------
+Syntax:
+-------
+alter table <tableName> add primary key(<colName>);
+
+eg:create table student (sid int,sname varchar(15),email varchar(15),bid int);
+
+-> alter table student add primary key(sid);
+or
+-> alter table student add primary key(sid,bid);
+
+Note:
+------
+While adding the primary key to the columns then make sure that available records should be unique.
+
+7)Droping Primary key 
+----------------------
+Syntax:
+---------
+alter table <tableName> drop primary key;
+
+eg:
+---
+alter table student drop primary key;
+
+8)Adding Constraints
+---------------------
+Syntax:(For Both)
+----------------------
+alter table <table_name> add constraint <Constraint_refName> <constraintName> (colName);
+eg:
+alter table student add constraint un unique(sid);
+alter table student add constraint pk1 primary key(sname);
+
+9)Dropping Constraints 
+----------------------- 
+Syntax:
+---------
+MySQL
+--------
+alter table <table_name> drop key <Constraint_refName>;
+eg:
+alter table student drop key un;
+alter table student drop key pk1;
+
+For Oracle
+------------
+alter table <table_name> drop constraint <Constraint_refName>;
+
+eg:
+alter table student drop constraint un;
+
+alter table student drop constraint pk1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
