@@ -1,0 +1,57 @@
+Sub Query
+----------
+Defining one query as the part of another query is known as subquery.
+
+If you are defining sub-query then first, sub-query will be executed and the result of the sub-query will used to execute the main query.
+
+Syntax:
+-------
+main Query (select clause or subquery);
+
+Example : 1
+---------------
+Create the table as Follows
+----------------------------
+create table student(sid int primary key, sname varchar(15), email varchar(25));
+
+create table address (sid int, city varchar(15), feepaid float, state varchar(15));
+
+-> Insert some infromation in both the table.
+
+-> Access all the information of the student from student table whose city belongs to Blore.
+
+select * from student where sid in(select sid from address where city = 'Blore');
+
+-> Access sid and feepaid information of student whose name is Subrat ?
+
+select sid, feepaid from address where sid in (select sid from student where sname='Subrat');
+
+-> Access sid,city and feepaid information of the student whose email belongs to javapuzzles domain.
+
+select sid,city,feepaid from address where sid in(select sid from student where email like '%@javapuzzles.com');
+
+-> Access the student information whose feepaid is less than 17000 ?
+
+select * from student where sid in (select sid from address where feepaid < 17000);
+
+Example : 2
+--------------
+1)student table as we created previously 
+2)create studinfo table as follows
+
+create table studinfo(sid int,phone long,street char(10)); 
+
+// Insert some records
+
+select * from student where sid in(select sid from studinfo where street='mk');
+
+select * from student where sid = (select sid from studinfo where sid=101);
+
+select * from student where sid in(select sid from studinfo where sid in (select sid from studinfo where street='mk'));
+
+select * from student where exists(select * from studinfo where street='mk');
+
+update student set sname='sr' where sid=(select sid from student where street='BTM');
+
+
+
