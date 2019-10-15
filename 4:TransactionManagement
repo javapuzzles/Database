@@ -1,0 +1,183 @@
+Transaction Management
+------------------------------
+Transaction is a process of executing mutiple queries as a single unit.
+
+1 Transaction => 5 queries are there
+Each 5 queries have to be exectuted successfully. Then only this transaction is successful else if any of the query is failed, then transaction also will fail. And all other queries also have to be rolled back (if success).
+
+q1 - success (deducted some amount of c1 wallet) - roll back
+q2 - success (you are inserting some msg to c2 - c1 is paid) - roll back
+q3 - success (adding the money to c2 wallet) - roll back
+q4 - failes (c2 approve to purchase book) 
+q5 - purchase some book (update the book table)
+-----
+Transaction is successful if each queries successfully executed.
+
+
+
+I want to purchase a ticket from irctc website
+-----------------------------------------------
+
+select * from tickets_admin; -> Collecting info about tickets
+
+if tickets are > 0 (=> 125 available seats)
+
+we need to book 1 ticket of 5 members
+
+select price from tickets_admin; => 250
+
+if you will purchase the ticket => 250 x 5 => 1250 INR
+total cost = 1250 INR
+
+
+IRCTC App/Web has to deduct 1250 INR amount from your credit card/ account
+
+q1) select balance from amex_customer where cust_id = ?;
+(succesfully) => 4000INR
+
+update, delete, insert -> roll back
+
+if balance >= 1250
+
+4000 - 1250 => 2750
+q2) update amex_customer set bal = 2750 where cust_id = ?;
+(successful) - roll back -> bal = 4000
+
+q3) select bal from irctc_sbi;
+total bal = 550000
+550000 + 1250 = 551250
+
+q4) update irctc_sbi set bal = 551250 where cust_id = ?
+(failed) - Transaction cancelled, failed
+
+seats = 125 - 5 = 120
+q5) update tickets_admin set seats = 120 where user = 'admin';
+(successful)
+
+---------> Your Transaction is successful
+
+Meaning for transaction is, whatever queries you are submitting to the database, either all the quiries should be executed or none of those.
+
+If any one of those quires will fail then transaction will not be successful. And all previous quires will be canceled.
+
+-> To manage the transaction, database has given the following command : 
+      1) commit
+      2) rollback
+      3) savepoint
+
+1) commit: commit will be used to insert the data (information) into the database permanently. Means after commiting, there is no option to rollback or cancel.
+
+2) rollback: rollback will be used to cancel the uncommited queries.
+
+3) savepoint: savepoint may be used to create the boundries to rollback the queries.
+
+Every database has the concept of autocommit. It indicate that after executing the queries it will be commited immidiately or not.
+-> To know the autocommit value
+
+For Oracle:
+-------------
+      show autocommit;
+
+For MySQL:
+-------------
+      select @@autocommit;
+
+-> To change the autocommit value
+For Oracle:
+-------------
+      set autocommit on;
+      set autocommit off;
+
+For MySQL:
+-------------
+      set @@autocommit=1;
+      set @@autocommit=0;
+
+-> If the value is TRUE (ON / 1) then after executing the query immidiately, automatically it will be commited.
+
+ By default autocommit value for Oracle DBMS is OFF. And if the value is FALSE (OFF / 0) then after executing the query, it will not be commited automatically. 
+
+ By default autocommit value for MySQL DBMS is TRUE (ON / 1). To manage the transaction, autocommit value should be false.
+ 
+ Example
+--------
+javapuzzlesd_db (Book Store) 
+-------------------------- 
+icicicustomer_info 
+--------------------
+accno cname email bal 
+111 Subrat sub@icici
+
+book_info
+------------
+bid bname author cost JP-001 Java Sri 550
+70000
+JP-002 Hadoop
+Manish 700
+
+customer_info (UserAccount) 
+--------------------------- 
+caccno cname    email               bal
+101    Subrat   sub@javapuzzles.com 19000
+102    Kishore  kishore@javapuzzles 20000
+
+---> (Auto Commit Value = FALSE)
+insert into...
+insert into...
+select bal from customer_info where caccno = 101;
+select cost from book_info where bid = 'JP-002';
+
+// 19000
+If (bal >= cost)
+int ubal = bal - cost;
+update customer_info set bal = ubal where caccno = 101;
+update icicicustomer_info set bal = bal + cost where accno = 111;
+-> yes ok
+commit; (Now you do the task whatever i told)
+
+
+ Managing the Transaction
+------------------------------- 
+------> autocommit = false (Oracle by default)
+------> In mysql, you have to change autocommit value to 0
+
+Q1 
+Q2
+
+Q3 savepoint p1;<--------
+      Q4
+      Q5
+      Q6
+      Q7 savepoint p2;<--------
+      Q8
+      Q9
+      rollback to p2;
+Q10 commit;
+
+-------Transaction start------- autocommit - false
+-> duplicate records
+q1 - insert
+q2 - insert
+q3 - insert
+q4 - insert
+savepoint insert_point;
+-> changed few records
+q5 - update
+q6 - update
+q7 - update
+savepoint update_point;
+-> deleted few records
+q8 - delete
+q9 - delete
+q10 - delete -> rollback to insert_point;
+
+commit;
+--------Transaction finished--------
+
+
+ 
+ 
+
+
+
+
