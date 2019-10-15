@@ -1,0 +1,52 @@
+SQL VIEW
+---------
+It is a temporary table (will be stored permanently in db). It contains only the schema part. It will be used to provide the restrictions for the column to be accessed by the unauthorised user.
+
+View will be dependent always on the other table. By using the view, you can access the information from the table as well as if required, you can insert, update or delete the information from the table.
+
+If you are performing the operation with the view then the information will be affected in the actual table.
+
+View does not contain any information (records).
+
+Syntax to create the view (For Both) 
+------------------------------------- 
+create view <viewName> as <select Statement>;
+
+student - primary key, unique key
+
+create view student_view as select
+
+Type of View
+---------------
+1) Dynamic View (Updatable View)
+2) Static View / (Read Only View)
+
+1) Dynamic View (Updatable View) 
+---------------------------------
+By using the dynamic view you can access the information from the table as well as you can insert, update or delete the information. To insert the information, all the primary key column and the not null column (that doesn't have a default value) must be accessable by using that view. While creating the view if you are not using group by or order by or aggragate functions then the view will be dynamic view.
+
+2) Static View / (Read Only View)
+----------------------------------
+If you are using group by or order by or aggragate functions while creating the view then the view will be static view. By using the static view you can access the information but you can't modify the information.
+
+Example
+----------
+create table student (sid int primary key, name varchar(15), email varchar(25) not null, phone long, city varchar(15), pin int, totalfee float not null default 25000, feepaid float);
+// Insert some records
+
+Dynamic View
+--------------
+create view hr_view as select sid,name,email,city from student;
+create view accounts_view as select sid,feepaid,feebal from student;
+
+create view manager_view as select sid,sname,email,phone,city,pin from student;
+
+// try to update,delete,insert on views and see the result into other views and tables.
+
+Static View
+--------------
+create view totalFeeCityWise as select city,sum(feepaid) from student group by city;
+create view sortedName as select * from student order by name;
+
+
+
