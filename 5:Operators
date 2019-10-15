@@ -1,0 +1,165 @@
+Operators
+------------
+Operator will be used to perform some operation. To perform some operation, there are following types of Operators :
+
+1) Arithmetic Operator
+2) Relational Operator
+3) Logical Operator
+4) IN Operator
+5) BETWEEN Operator
+6) LIKE Operator
+7) IS NULL Operator
+etc..
+
+
+1) Arithmetic Operator
+-------------------------
+Arithmetic Operator required two operands to perform some operation. Arithmetic Operator are following:
+      [+,-,/,*,mod]
+Addition (+)
+Substraction (-)
+Multiplication (*)
+Division (/)
+Remainder (mod)
+
+2) Relational Operator 
+-------------------------
+Following are the relational operators: [<,>,>=,<=,!=,=]
+Greater than (>)
+Greater than equals to (>=)
+Less than (<)
+Less than equlas to (<=)
+Not equals to (!=)
+Equals to (=)
+
+These operators will always return boolean values.
+
+select * from customers where city != 'Bangalore';
+
+3) Logical Operator [AND,OR,NOT] 
+---------------------------------
+The AND & OR operators are used to filter records based on more than one condition.
+
+select * from customers where salary > 10000 AND city = 'Bangalore';
+
+I want only customers, who blongs to either Bangalore or Chennai
+
+select * from customers where city = 'Bangalore' or city = 'Chennai';
+
+The AND operator displays a record if all the conditions are true.
+
+The OR operator displays a record if either of the condition is true.
+
+The logical AND & logical OR operator requires two operands. The operands should be boolean type.
+
+true or false
+
+select * from employees where true AND true
+-> select * from employees where city != 'Bangalore' and city != 'Chennai';
+true AND true => true
+
+Logical OR operator will return the value true, if any one condition is true. But if both the condition is false then it will return always false.
+
+Ex: select * from persons where fname='Ajil' or fname='Kishore';
+
+Logical AND operator will return true if both the condition are true otherwise it will return false always.
+
+Ex: select * from persons where fname='Ajil' and lname='Babu';
+
+The logical NOT operator requires only one value. NOT operator will return the reverse of its operand.
+
+Ex: 
+select * from students where not city in ('Bangalore','Lucknow'); 
+
+select * from students where city != 'Blore' and city != 'Lucknow';
+
+-> Between Operator
+--------------------
+This operator is used to compare the value from the range of the values or between the values.
+
+Ex: 
+select * from students where fee between 10000 and 20000; 
+
+select * from students where fee >= 10000 and fee <= 20000;
+
+-> Is Null Operator
+----------------------
+It will used to compare the value with null value. Null value cann't be compaired by using relational operator. So you have to use 'is null' or 'is not null' operator to compare the value with null.
+
+Ex: select * from students where city is null;
+or select * from students where email is not null;
+
+-> In Operator
+---------------
+In operator will be used to verify one value from multiple values. If any of the value will be matched then result is true otherwise result will be false always.
+
+Ex: 
+select * from student where city = 'Blore' or city = 'Hyd' or city = 'Chennai' or city = 'Delhi';
+
+select * from students where city in ('Blore','Hyd','Chennai','Delhi');
+
+-> LIKE Operator
+--------------------
+It will be used to compare the value with the specified pattern (Wildcard). SQL pattern can be used when we will be searching for data in a database. SQL pattern must be used with the SQL LIKE operator. To define the pattern, you can use the following character -
+
+_ (Underscore) -> A substitute for exactly one character. 
+% (Percent) -> A substitute for zero or more characters.
+Ex:
+-> I want to select those students whose email is ends with '@javapuzzles.com'.
+
+select * from students where email like '%@javapuzzles.com';
+-> I want to select those students whose name is starting from 'S'.
+
+select * from students where sname like 'S%';
+
+-> I want to select those students whose name's third character must be 'b'.
+select * from students where sname like '__b%';
+
+Qu:15) Display the customers whose balance is not equals to 10000 ? -> select * from customers where bal != 10000;
+
+Qu:16) Display the customers who are not staying Bangalore and Delhi ?
+-> select * from customers where city not in ('Bangalore','Delhi');
+-> or select * from customers where city != 'Bangalore' and city != 'Delhi';
+
+Qu:17) What is DML in SQL ?
+
+-> DML is Data Manipulating Language. So in this, we can manipulate the data, means you can use update statement, delete statement, insert statement and select statement. 
+
+After performing these tasks, if you want to undo the data then you can rollback also.
+
+Qu:18) What is DDL in SQL ?
+-> DDL is Data Definition Language. So here we are defining the definition of the data means you can use the           create statement, drop statement, truncate statement, alter statement. Here there is no option to rollback.
+
+Qu:19) What is DCL in SQL ?
+-> DCL is Data Control Language. DCL stands for controlling the data. If you want to give some permission to secure your data then you will have to use grant statement, revoke statement.
+
+Qu:20) What is TCL in SQL ?
+-> TCL is Transaction Control. TCL stands for controling the transaction. When you are managing transaction then you will have to use commit, rollback, savepoint statement.
+
+Qu:21) What is the difference SQL and MySQL ?
+-> SQL stands for Structured Query Language. It's a standard language given by ANSI for accessing and manipulating the database. It is used to perform CURD operation etc.
+
+-> MySQL is a database engine (RDBMS), that accept the SQL and follow the instruction and passing out the relevent data as per requirment. It is provided by database vendor (SunMicrosystem).
+
+-> All type of RDBMS are using SQL. PL/SQL use SQL to manipulate and save the data in the database.
+
+Note: All the RDMS are containing two database server (Engine), first is SQL server and second is PL/SQL server. SQL server is used to complie sql queries and PL/SQL server is used to compile pl-sql related queries.
+
+PL/SQL stands for Procedural Language.
+
+Qu:22) Difference between delete, truncate and drop ?
+-> Delete statement is responsible to delete rows from tables one by one. You can use where clause also with the delete statement sothat you can delete the specific data conditionally.
+
+It comes under the DML commands which are having rollback facility.
+
+-> Truncate statement is responsible to remove all the rows from table except table itself at a time. You cann't use where clause with the truncate statement. Mainly truncate statement will delete all the data from table as well as table itself and after that immidiatly it will create the same table with the same description. It comes under DDL commands. You can't rollback.
+
+-> Drop statement is responsible to remove a table from database. With this statement, you can remove all rows, indexes, views, sequences, databases also. It also follows DDL command language so you cann't rollback or undo.
+
+
+
+
+
+
+
+
