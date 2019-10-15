@@ -102,7 +102,6 @@ Specifying the limit
 ---------------------
 delete from student where sid = 101 limit 1;
 
-
 delete from customer; (** This statement will delete all the records from customer table)
 
 *** where clause is optional for the delete statement but it is recommendable otherwise, it may delete all the records from the table. If you want to delete all the data from the table but you don't want to delete table itself then either you can use delete statement without using where clause or you can use TRUNCATE statement also.
@@ -243,6 +242,13 @@ select distinct(<columnName>) from <tableName>;
 
 eg: select distinct(city) from students;
 
+
+Qu:14) Difference btw char & varchar ?
+
+When you will use char datatype with some size, it will occupy the memory equvalent to the size what we have specified.
+When you will use varchar datatype with some size, it will occupy the memory equvalent to how many characters is being used.
+
+Note: This is the advantage of using varchar over char datatype.
 
 
 
