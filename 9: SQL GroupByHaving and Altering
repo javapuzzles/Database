@@ -131,7 +131,7 @@ alter table student drop column city; // Both
 5)Modifying datatype
 ---------------------
 Syntax: (For Both)
-----------------------
+---------------------
 alter table <tablename> modify <colName> <datatype>;
 
 eg: create table student (sid int,sname varchar(15),email varchar(15),fee float);
@@ -175,7 +175,7 @@ alter table student drop primary key;
 8)Adding Constraints
 ---------------------
 Syntax:(For Both)
-----------------------
+-----------------
 alter table <table_name> add constraint <Constraint_refName> <constraintName> (colName);
 eg:
 alter table student add constraint un unique(sid);
