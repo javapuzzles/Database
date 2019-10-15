@@ -1,0 +1,184 @@
+SQL JOIN
+---------
+SQL Joins are used to fetch the data from two or more tables.
+
+If you want to access the information from multiple table then some column will be used to join the table.
+
+The value will be accessed depending upon the value of the joining columns. There are following types of JOIN :
+
+1) Inner Join (Natural Join)
+2) Outer Join
+      a) Left Outer Join
+      b) Right Outer Join
+      c) Full Outer Join
+3) Self Join
+4) Cross Join **(Oracle)
+
+1) Inner Join:
+---------------
+The INNER JOIN keyword return rows when there is at least one match in both tables. 
+
+Means when you are applying Inner join on two tables, it fetches matching records from both tables.
+
+Syntax:
+---------
+select column(s) from table(s) where tabname1.colname=tabname2.colname;
+
+select * from table(s) where tabname1.colname=tabname2.colname and tabname2.colname=tabname3.colname;
+
+select column(s) from tabname1 inner join tabname2 on tabname1.colname=tabname2.colname;
+
+select column(s) from tabname1 inner join tabname2 using(colname); select column(s) from tabname1 natural join tabname2;
+
+Examples:
+------------
+create table person (id int, name varchar(10), email varchar(15), phone long);
+// Insert some record
+
+create table address (adid int, street varchar(10), city varchar(10), state varchar(10));
+// Insert some records
+
+create table customer (cid int, cname varchar(10), phone long); // Insert some records
+
+-> Applying the Condition to fetch the record 
+----------------------------------------------
+
+select * from person,address where person.id = address.id;
+
+select id,name,email,street,city from person,address where person.id = address.id;
+
+select person.id,person.name,person.email,address.street,address.city from person,address where person.id = address.id;
+
+select p.id,p.name,p.email,a.street,a.city from person p,address a where person.id = address.id;
+
+select * from person inner join address on person.id = address.adid; 
+
+select * from person inner join address where person.id = address.adid;
+
+select * from person inner join address using(id);
+
+
+-> Make sure that id column must be present in both the table.
+select * from person natural join address;
+
+-> Make sure that id column must be present in both the table.
+select * from address,customer,person where person.id = address.adid and person.id = customer.cid;
+
+-> Make sure that id column must be present in both the table.
+select * from person natural join address;
+
+-> Make sure that id column must be present in both the table.
+select * from address,customer,person where person.id = address.adid and person.id = customer.cid;
+
+
+2) Left Outer Join:
+----------------------
+The LEFT JOIN keyword returns all rows from the left table (table_name1), even if there are no matches in the right table (table_name2). 
+
+Means by using left outer join, you can access matching information from both the table as well as non matching information from the first table.
+
+Syntax:
+---------
+select column(s) from tabname1 left join tabname2 on tabname1.colname=tabname2.colname;
+
+select column(s) from tabname1 left outer join tabname2 on tabname1.colname=tabname2.colname;
+
+select column(s) from tabname1 left outer join tabname2 using(columnName);
+
+These are the ways to use left outer join 
+-----------------------------------------
+1) select * from student left join customer on student.sid = customer.cid;
+
+2) select * from student left outer join customer on student.sid = customer.cid;
+
+3) select * from customer left outer join student on student.sid = customer.cid;
+
+4) select * from customer left outer join student on using(sid);
+
+**sid column should be present in both the table.
+
+
+3) Right Outer Join:
+-----------------------
+The RIGHT JOIN keyword Return all rows from the right table (table_name2), even if there are no matches in the left table (table_name1). 
+
+Means by using right outer join, you can access matching information from both the table as well as non matching information from the second table or right table.
+
+Syntax:
+---------
+select column(s) from tabname1 right join tabname2 on tabname1.colname=tabname2.colname;
+
+select column(s) from tabname1 right outer join tablename2 on tabname1.colname=tabname2.colname;
+
+select column(s) from tabname1 right outer join tabname2 using(columnName);
+
+These are the ways to use right outer join 
+--------------------------------------------
+1) select * from customer right join student on student.sid = customer.sid;
+
+2) select * from customer right outer join student on customer.sid = student.sid;
+
+3) select * from student right outer join customer on student.sid = customer.sid;
+
+4) select * from customer right outer join student using(sid); 
+**sid column should be present in both the table.
+
+4) Full Outer Join: (Oracle)
+-----------------------------
+The FULL JOIN keyword return rows when there is a match in one of the tables. It will access the matching information from both the table as well as the non matching information from the first and second table.
+
+Syntax:
+---------
+For Oracle
+-----------
+select column(s) from tabname1 full join tabname2 on tabname1.colname=tabname2.colname;
+
+select column(s) from tabname1 full outer join tabname2 on tabname1.colname=tabname2.colname;
+
+select column(s) from tabname1 full join tabname2 using(columnName);
+
+These are the ways to use full outer join 
+-----------------------------------------
+
+For Oracle
+------------
+1) select * from student full join customer on student.sid = customer.cid;
+
+2) select * from student full outer join customer on student.sid = customer.sid;
+
+3) select * from student full outer join customer using(sid); **sid column should be present in both the table.
+
+For MySQL
+-------------
+select * from student left outer join customer on student.sid = customer.sid UNION select * from student right outer join customer on student.sid = customer.sid;
+
+select * from student left join customer on student using(sid) UNION select * from student right join customer using(sid);
+
+Note: In the case of left,right and full join don't use where clause to specify the condition.
+
+5) Self Join:
+--------------
+It will be used to join one table with itself. In the case of self join one column of table will be matched with the another column of the same table.
+
+These are the ways to use Self join
+------------------------------------
+select st.sid,st.sname,st.email,st.phone,ref.sid,ref.sname,ref.email,ref.phone from student st, student ref where ref.refby = st.sid;
+
+6) Cross Join:
+----------------
+It will return the cartisian product of the record.
+
+Syntax:
+---------
+select column(s) from tabname1 cross join tabname2;
+select column(s) from table(s);
+
+These are the ways to use Cross join 
+-------------------------------------
+
+1) select * from student, customer;
+2) select * from student cross join customer;
+3) select sid, sname, aid, city, cid, cphone from student, address,customer;
+
+
+
