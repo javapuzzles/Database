@@ -1,0 +1,127 @@
+SQL INDEX
+----------
+It is the database object that will be related to the table. 
+
+Index will be used to manage the information of the specified column in the sorted order. 
+
+The index can be created by the database or the user. 
+
+It can be used by the database internally in the following scenario:
+
+1) When you are defining the condition by using the column that have the index.
+
+eg: select * from student where city = 'Blore';
+
+200000
+population (voter_id, name, dob, sex, city)
+Blore - 40k
+Hyderabad - 40k
+Chennai - 50k
+Delhi - 50k
+Kolkata - 20k
+
+select * from population where city = 'Delhi' where voter_id = 1011;
+2 sec
+
+created the index for city column ()
+1 Blore - 40k
+2 Hyderabad - 40k
+3 Chennai - 50k
+4 Delhi - 50k
+5 Kolkata - 20k
+
+1 or 2ms
+
+select * from population where city = 'Kolkata';
+
+2) If you are using order by with the column that is index. eg: select sid, email from student order by sname;
+
+3) If your table has the primary or unique key then for those column automatically the index will be created. 
+
+For other column you can create the index explicitly as follows:
+
+Syntax: (For Both)
+---------------------
+create index <indexName> on <tableName>(<columnName>);
+
+eg: create index javapuzzlesindx1 on student(email);
+
+4) If you are updating the table then if the table has the index, it will take more time compare to the table that doesn't have any index. The index will be used to search the information fastly.
+
+eg: create table student(id int, name varchar(15), email varchar(30));
+-> This table doesn't have any index.
+
+create table student(id int primary key, name varchar(15), email varchar(30));
+-> Here DB will create one index automatically for id column.
+
+create table student(id int primary key, name varchar(15), email varchar(30) unique);
+
+-> Here DB will create two indexes automatically for id and email column.
+
+Simple Index
+----------------
+create index idIndex on student(id);
+
+Composit Index
+---------------
+create index javapuzzlesIndex on student(name, email);
+
+To View The Index:
+------------------
+For Oracle:
+------------
+select index_name, table_name from user_indexes where table_name = '<TABLENAME>';
+
+eg: select index_name,table_name from user_indexes where table_name = 'STUDENT';
+
+Note: Table name should be in upper case.
+
+For MySQL:
+-----------
+show indexes from <tableName>;
+
+eg: show indexes from student;
+
+To drop indexes
+----------------
+in MySQL
+---------
+drop index <indexName> on <tableName>; 
+
+eg: drop index indx1 on student;
+
+In Oracle
+-----------
+drop index <indexName>;
+
+drop index indx1;
+
+Creating new Table from Existing table 
+---------------------------------------
+Syntax: (For Both)
+-------------------
+create table <tableName> as select statement;
+
+eg:
+----
+create table info3 as select * from student;
+
+create table info4 as select sid,sname,email,city from student natural join address;
+
+create table info5 as select sid,sname,email,city from student inner join address on student.sid = address.sid;
+
+create table info6 as select sid,sname,email,city from student natural join address where city='Blore';
+
+Note:
+-----
+If you are creating the table by using existing table then the information of both the table will be independent. If you are modifying the information in one table then it won't effect to another table.
+
+
+
+
+
+
+
+
+
+
