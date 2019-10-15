@@ -1,0 +1,255 @@
+Constraint
+------------
+Usage of Constraint
+--------------------
+-> If you don't want to allow null value or you want to force to user, always provide some value for some specific column.
+
+-> You don't want to insert duplicate records.
+
+-> You want to force to user, always provide some value for some specific column but that value should be unique.
+
+-> You want to verify certain condition before inserting or modifying the records.
+
+-> If user is not providing any value for some column then by default null will be stored. But instead of storing null value you want to store some custom value.
+
+Constraints are used to limit the type of data that can go into a table. Constraints can be specified when a table is created (with the create table statement) or after the table is created (with the alter table statement).
+Generally Constraint are the rules that can be applied for the columns of the table. We will focus on the following constraints:
+
+1) NOT NULL Constraint
+2) UNIQUE Constraint
+3) PRIMARY KEY Constraint
+4) FOREIGN KEY Constraint
+5) CHECK Constraint (Oracle**)
+6) DEFAULT Constraint
+
+NOT NULL Constraint
+--------------------
+If you are using NOT NULL constraint with the column then null value can not be inserted for the specified column. 
+
+The NOT NULL constraint enforces a field to always contain a value. This means, you cannot insert a new record, or update a record without adding a value to this field.
+
+So while inserting the record, you need to provide some value for the specified column and the value should not be null.
+
+By default DB server will insert null value, if you are not providing some value.
+
+-> So if you don't want to allow null values for the required columns, you can apply NOT NULL constraint.
+
+-> You should apply the not null constraint while creating the table or while adding a new columns.
+
+-> In one table you can define any number of columns as NOT NULL.
+
+Ex: create table student (sid int not null, name varchar(15), email varchar(25) not null, phone long);
+or alter table student add column city varchar(15) not null;
+
+create table students (sid int not null, sname varchar(25), phone long not null);
+
+->Insert some records. If you are giving the null value for sid, DB complain as follows :
+
+-> Column 'sid' cannot be null (MySQL)**
+-> cannot insert NULL into ("SYSTEM"."STUDENTS"."SID") (Oracle)**
+
+Note: You can use 'not null' constraint with the field of type long.
+
+UNIQUE Constraint
+------------------
+The UNIQUE constraint will be used to identify each record in a database uniquely. The UNIQUE KEY and PRIMARY KEY constraints both provide a guarantee for uniqueness for a column or set of columns.
+
+Sometime you may need unique values for some perticular columns. If you want to enforce unique values always then you can apply the unique key constraint.
+
+If unique constraint is specified for a column, then it will not allowed duplicate value for this column.
+
+For the unique key column, NULL value can be stored for any number of records. You can define multiple columns or combination of multiple columns as unique in the table.
+
+If required, you can use the combination of UNIQUE and NOT NULL constraint for the column of the table.
+
+-> If any column is defined with long data type then it cann't be defined with unique key constraint.
+
+Ex: create table student (sid int not null unique, sname varchar(15), phone long not null, email varchar(25), city varchar(15));
+(or)
+create table student (sid int not null unique key, sname varchar(15), phone long not null, email varchar(25), city varchar(15));
+(or)
+create table student(sid int unique not null, sname varchar(12), email varchar(25) unique not null, phone long, age int not null);
+(or)
+create table student (sid int not null, sname varchar(15), phone long not null, email varchar(25), city varchar(15), unique (sid,email)); (*** Here, either sid or email, should be unique)
+
+
+For MySQL
+-----------
+create table customer (cid int unique key, cname varchar(15), email varchar(25) unique, phone long, city varchar(15));
+
+create table employee (eid int not null, ename varchar(15), salary double not null, exp int, unique(eid,exp));
+
+create table add1 (aid bigint unique, aname varchar(15));
+
+For Oracle
+-----------
+create table customer (cid int unique, cname varchar(15), email varchar(25) unique, phone long, city varchar(15));
+create table add1 (aid number(10,15) unique, cname varchar(15)));
+
+For Both
+---------
+// Invalid (For Both)
+create table student (sid int unique not null, bid
+varchar(15) not null, email varchar(25), phone long unique not null);
+
+// Valid
+create table student (sid int unique not null, bid int unique, sname varchar(15), email varchar(25), phone long not null);
+
+Note: While creating the table make sure that table name should not be 'add'.
+Note: You can't use 'unique key' constraint with field of type long.
+
+PRIMARY KEY Constraint
+-----------------------
+It is the combination of unique and not null constraint. Each table can have only one primary key. A primary key column cannot contain NULL values.
+
+If you are using primary key costraint then it is mendatory to provide the value for column and the value must be unique.
+
+Primary key can be only one column or the combination of multiple columns. The Primary key constraint uniquely identifies each record in a database table. There are two types of Primary key -
+      -> Simple Primary Key
+      -> Composite Primary Key
+
+-> When you specified a Primary Key for a single column then it is known as Simple Primary Key.
+
+-> When you specified a Primary Key for multiple columns then it is known as Composite Primary Key.
+
+Ex: create table student (sid int primary key, sname varchar(15), email varchar(25) unique not null, bal float); (***For Simple Primary Key)
+
+create table student (sid int, sname varchar(15), email varchar(25), bal float, primary key(sid));
+(***For Simple Primary Key)
+
+create table student (sid int primary key, sname varchar(15), street varchar(15), fee float);
+
+create table cust (cid int, cname varchar(15), phone long, city varchar(15), primary key(cid));
+
+create table emp (cid int, eid int, ename varchar(15), ephone long, email varchar(25), city varchar(15), primary key(cid,eid,ename));
+(***For Composite Primary Key)
+
+-> Invalid
+------------
+create table stud1 (sid int primary key, sname varchar(15), street fee float primary key);
+
+create table stud(sid long primary key, sname varchar(15) unique not null);
+(for both Oracle & MYSQL)
+
+Note: You can't use primary key with long data type.
+
+CHECK Constraint (For Oracle only)
+-----------------------------------
+While you are inserting the record into the table, you may get the requirment to insert the data after satisfying some condition. Those condition you have to specify while creating the table itself. For specifying the condition, you can use CHECK constraint.
+
+eg: create table javapuzzles_check (sid int check(sid > 100), sname varchar(25), email varchar(25) check(email like '%@javapuzzles'), phone long);
+
+Note: If you are using check contraint in MySQL then mysql db-server will not give any problem but whatever condition you are applying that won't work.
+
+Default Constraint
+-------------------
+While you are inserting the value into the table then if you are not providing the value for some column then your database server will insert null value. So null is the default value for any column. But if you don't want to insert null as defult value then you can set some custom value by using default constraint.
+
+eg: create table students (sid int primary key, sname varchar(15), email varchar(25) default 'user@javapuzzles', city varchar(15), age int default 21);
+
+insert into students (sid,sname,city) values (101,'Subrat','Blore');
+
+-> In this case we are not providing the value for email and age column. So by default our database server will insert null value. But you have used default constraint, so the corresponding custom value will be inserted.
+
+Q) Write the difference b/w Primary Key and the combination of Unique key not null ?
+
+Q) Write the defference b/w Primary key and Default Constraint ?
+Ans:
+-> When we are using Primary key, null value will not be inserted. But in the case of default contraint, you can make the default value as null explicitly.
+
+-> You can't insert duplicate value for primary key column.
+But in the case of default constraint, same value will be used always when you are not providing the value for specific column.
+
+Q) Can i insert multiple null value into the column that have specified as Unique ?
+Ans: Yes, you can insert null value multiple time.
+
+Q) How many columns we can define as Unique key not null combination ? 
+Ans: Any number of column you can define as this combination. But for primary key only one column you can define, either you can use only one or you can use the combination of multiple columns (Composite Primary key).
+
+Q) What will happen when you mark the column as default not null ?
+In that case, if user will skip that column than default value will be inserted. (Here not null will  be avoided).
+
+FOREIGN KEY Constraint
+-----------------------
+If you have the requirment to make the relationship between two or more table then you can use Foreign Key Constraint.
+
+A foreign key in one table points to a primary key in another table. Foreign key constraint will be used to establish the relation between one or more than one tables. 
+
+The main table is known as Master table and the other tables are known as reference tables. In this condition you need to follow the following rules-
+
+-> When you are creating the parent table then you have to remember that which column you are declared as primary key or unique, only those columns you can use as a foreign key in the child table.
+
+-> If you are inserting the information in the reference table then the reference key value should be verified in the Master table. If the information is found then only it should be inserted in the reference table otherwise it won't insert.
+
+create table employees (eid int unique, ename varchar(15), email varchar(25), phone long, salary float); (Master Table)
+(or)
+create table employees (eid int primary key, ename varchar(15), email varchar(25), phone long, salary float); 
+(Master Table)
+
+For Oracle (Only)
+-----------------
+create table addresses (street varchar(15), city varchar(15), state varchar(15), aid int references employees(eid)); (Child Table)
+
+-> If you are deleting the information from the Master table then the matching information should be verified in the reference table (Child table). If matchong record found then the actual record from master table should not be deleted. 
+
+Before deleting the record from the Master table, the foreign table should be updated.
+
+-> You can delete the entire child table.
+(or)
+-> Either delete the matching information/record from the reference table or update the foreign key value with null.
+
+So these rules can be implemented by using foreign key constraint. While creating the reference table, you can insert the data to update the reference table automatically when the records will be deleted from the Master table.
+
+-> ON DELETE <option>
+
+<option> may be -> CASCADE : To delete the record from the
+reference table (depending on the condition it may delete the entire record from the child table).
+SET NULL : To update the foreign key values with null.
+
+Only For MySQL
+---------------
+Note: You can use ON UPDATE <option>
+      <option> may be -> CASCADE or SET NULL
+Ex: create table student (sid int primary key, sname varchar(15), age int);
+(Master Table)
+
+For Oracle:
+-----------
+-> create table email (eid int primary key, ename varchar(15), studid int references student(sid));
+
+-> create table email (eid int primary key, ename
+varchar(15), studid int references student(sid) on delete cascade);
+
+-> create table email (eid int primary key, ename varchar(15), email varchar(15), studid int references student(sid) on delete set null);
+
+For MySQL and Oracle:
+-----------------------------
+-> create table email (eid int primary key, ename varchar(15), email varchar(15), studid int, foreign key (studid) references student(sid));
+
+-> create table email (eid int primary key, ename varchar(15), email varchar(15), studid int, foreign key (studid) references student(sid) on delete cascade);
+
+-> create table email (eid int primary key, ename varchar(15), email varchar(15), studid int, foreign key (studid) references student(sid) on delete set null);
+
+For MySQL
+------------
+(Child Table)
+-> create table email (eid int primary key, ename varchar(15), email varchar(15), studid int, foreign key (studid) references student(sid) on update set null);
+varchar(15), email
+varchar(15), email
+
+-> create table email (eid int primary key, ename varchar(15), email varchar(15), studid int, foreign key (studid) references student(sid) on update cascade);
+
+Composite Primary Key (Both)
+----------------------------
+create table students (bid int, sid int, sname varchar(15), phone long, primary key(bid,sid)); (Master Table)
+
+create table address (aid int, street varchar(15), city varchar(15), state varchar(15), eid int, foreign key(aid,eid) references students (bid,sid));
+
+// Insert some records
+
+
+
+
+
+
+
