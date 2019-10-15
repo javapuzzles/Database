@@ -1,0 +1,250 @@
+CRUD Operation
+--------------
+Inserting the records into the tables 
+--------------------------------------
+
+The INSERT INTO statement is used to insert new records in a table.
+
+Syntax:
+---------
+I) insert into <table_name> values (val1,val2..);
+II) insert into <table_name> (col1,col2..) values (val1,val2...);
+
+When you are providing the values for all the columns, then use the syntax I and when you are providing the values only for some columns then use syntax II.
+
+When you are providing the values for some specific columns then for remaining column default value will be stored in the table. By dafault, value will be null.
+
+For Oracle :
+-------------
+Ex: 
+I) insert into customer values (101,'abc','abc@javapuzzles',12332344,'Bglor','10-oct-2012',9088.90);
+II) insert into customer (cid,cname,email,phone,city,dob,fee) values(101,'abc','abc@javapuzzles',12332344,'Bglor','10-oct-2012',9088.90);
+
+For MySQL :
+--------------
+Ex: 
+I) insert into customer values (101,'abc','abc@javapuzzles',12332344,'Bglor','2012-oct-10',9088.90);
+II) insert into customer (cid,cname,email,phone,city,dob,fee) values(101,'abc','abc@javapuzzles',12332344,'Bglor','10-10-2012',9088.90);
+
+For MySQL and Oracle Both : 
+----------------------------
+insert into customer values (101,'abc',null,12332344,'Bglor',null,9088.90);
+
+Note : With one insert statement, you can insert multiple records also.
+
+Inserting multiple records by using single insert statement
+-----------------------------------------------------------
+For MySQL
+---------
+III) insert into <tableName> (<columns>) values (<values>), (<values>), (<values>), ....;
+
+eg: 
+create table stud (sid int, name varchar(10), fee float);
+
+insert into stud (name,fee,sid) values ('Ajil', 3244.99, 102),('Kishore', 37645.39, 103),('Meera', 2874.03, 104);
+
+For Oracle
+------------
+III) insert all into <tableName> (<columns>) values (<values>) into <tableName> (<columns>) values (<values>) into <tableName> (<columns>) values (<values>)... select * from dual;
+
+eg: 
+create table stud (sid int, name varchar(10), fee float);
+
+insert all into stud (sname,fee) values ('Rahul', 2176387.00) into stud(sid, status) values (103, 'Disable') into stud(sid, status) values (104, 'Enabled') select * from dual;
+
+Updating the records of a table 
+--------------------------------
+
+The UPDATE statement is used to update records in a table.
+
+Syntax:
+---------
+update <table_name> set <column_name1> = <value1>, <column_name2> = <value2>, <column_name3> = <value3>, ... 
+[where <condition>];
+
+Ex:
+----
+update student set email = 'xyz@javapuzzles', phone = 12345566 where sid = 102;
+
+update stud1 set sname='Ajil', email='ajil@javapuzzles', dob='1967-12-01' where sname='Subrat';
+
+update student set bal = 0 where bal <= 5000;
+
+Note : With one update statement, we can update 'zero' or more records. The WHERE clause specifies which record should be updated.
+
+** where condition is optional in update statement but recommendable. If you are using update statement without using where clause, it will update all the record of the table.
+
+Deleting the records from the table 
+------------------------------------
+The DELETE statement is used to delete records in a table.
+
+Syntax:
+---------
+-> delete from <table_name> [where <condition>];
+
+eg:
+delete from student where cid = 102;
+delete from customer where status = 'inactive';
+
+Note: If records are same then delete statement will delete all the records but if you want to delete only some record then you can specify the limit as follow :
+
+Ex: (3 common records in table) 
+--------------------------------
+sid       sname       email
+101       Subrat      subrat@javapuzzles
+101       Subrat      subrat@javapuzzles
+101       Subrat      subrat@javapuzzles
+
+delete from student where sid = 101;
+It will delete all the records from the table.
+
+Specifying the limit
+---------------------
+delete from student where sid = 101 limit 1;
+
+
+delete from customer; (** This statement will delete all the records from customer table)
+
+*** where clause is optional for the delete statement but it is recommendable otherwise, it may delete all the records from the table. If you want to delete all the data from the table but you don't want to delete table itself then either you can use delete statement without using where clause or you can use TRUNCATE statement also.
+
+-> If we want to delete only the data inside the table, and not the table itself then, use the TRUNCATE TABLE statement
+
+Syntax:
+---------
+truncate table <table_name>;
+
+eg: truncate table student; (It will delete the whole data from student table)
+
+Selecting the records from the table 
+-------------------------------------
+The SELECT statement is used to select data from a database. The result is stored in a result table, called the result-set.
+
+Syntax:
+---------
+select * (or) column_name(s) from table_name(s) [where <condition>] 
+[order by column_name(s) [having <condition>]]
+[group by column_name(s)[having <condition>]];
+
+eg:
+select * from student;
+select * from student where sid=101;
+select sid,sname from student where sid=103;
+
+SQL Where
+-----------
+The WHERE clause is used to filter records. It will be used to extract only those records that fulfill a specified condition.
+
+Syntax:
+----------
+select column_name(s) from <table_name> [where <condition>];
+
+eg: select * from students where sid = 101;
+
+select sid, sname, dob from stud1 where email='subrat@javapuzzles';
+
+SQL Order By
+------------
+The ORDER BY keyword is used to sort the result-set by a specified column. The ORDER BY keyword sort the records in ascending order by default. If you want to sort the records in a descending order, you can use the DESC keyword.
+
+Syntax:
+--------
+select column_name(s) from table_name [order by column_name(s) asc|desc];
+
+eg: select * from customers where city = 'Bangalore' order by cname asc;
+select * from student order by sname;
+select * from customers order by bal desc;
+
+SQL Alter
+-----------
+If you want to add some column into the table then you can use the following syntax:
+
+Syntax: (MySQL)
+---------------------
+alter table <tableName> add column <columnName> <dataType>;
+or alter table <tableName> add <columnName> <dataType>;
+eg: alter table students add column city varchar(15);
+
+Syntax: (Oracle)
+----------------
+alter table <tableName> add <columnName> <dataType>;
+eg: alter table students add city varchar(15);
+
+If you want to delete some column from the table then you can use the following syntax:
+
+Syntax: (MySQL & Oracle) 
+-------------------------
+alter table <tableName> drop column <columnName>;
+
+eg: alter table students drop column dob;
+
+For MySQL
+----------
+alter table <tableName> drop <colmnName>;
+
+Adding Multiple Column
+-----------------------
+For MySQL
+------------
+alter table <tableName> add(<col1> <dataType1>,<col2> <dataType2>..);
+
+For Oracle
+------------
+alter table <tableName> add(<col1> <dataType1>,add <col2> <dataType2>..);
+
+Qu:1) Display the complete information of all the customers ?
+select * from customers;
+
+Qu:2) Display cid,cname,phone and balance of all the customers ?
+select cid, cname, phone from customers;
+
+Qu:3) Display complete information of the students who are staying in Bangalore ?
+select * from students where city = 'Bangalore';
+
+Qu:4) Display name, email, city, balance of customers, whose balance is less than 10,000 ?
+select name, email, city, bal from customers where bal < 10000;
+
+Qu:5) Display complete information of the customers whose balance is between 20,000 and 50,000 ?
+select * from customers where bal < 50000 and bal > 20000;
+or
+select * from customers where bal between 50000 and 20000;
+
+Qu:6) Display complete information of the customers whose name is starting with 'S' ?
+select * from customers where cname like 'S%';
+
+Qu:7) Display the custmors who are having gmail account on gmail server ? -> select cname from customers where email like '%@gmail.com';
+
+Qu:8) Display the custmors who are staying in Bangalore, Chennai, Hyderabad, Mumbai ?
+select cname,city from customers where city = 'Bangalore' or city = 'Chennai' or city = 'Hyderabad' or city = 'Mumbai';
+
+Qu:9) Display the customers whose balance is either 5,000 or 10,000 or 20,000 ?
+select * from customers where bal = 5000 or bal = 10000 or bal = 20000;
+
+Qu:10) Display the customers whose balance is zero and staying in Bangalore and name starting with 'S' ?
+select * from customers where name like 'S%' and bal = 0 and city = 'Bangalore';
+
+Qu:11) Display the customers staying in Bangalore in ascending order based on the customer name ?
+select * from customers where city = 'Bangalore' order by cname asc;
+
+Qu:12) Display the customers in descending order based on the customer balance ?
+select * from customers where order by bal desc;
+
+Qu:13) Display the customers whose name first character can be anything, 2nd charcter must be 's' and 3rd character any number or character ?
+-> select * from customers where cname like '_s%';
+
+SQL Distinct
+--------------
+In a table, some of the columns may contain duplicate values. This is not a problem, but sometimes you will want to retrive the different (distinct) values from the table.
+
+The DISTINCT keyword can be used to return only distinct (different) values.
+
+Syntax:
+---------
+select distinct(<columnName>) from <tableName>; 
+
+eg: select distinct(city) from students;
+
+
+
+
+
+
