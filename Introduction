@@ -1,0 +1,61 @@
+DATABASE
+--------
+Database is an organized collection of data. And data is the smallest unit of an information.
+
+The data can be pictures, programs, or anything else that can be stored in the computer in the binary form.
+
+It is the collection of information related to the similar type of entities in some organized format.
+
+-> Information is the collection of data that have some meaning.
+-> Database related to the Employee (each information should be there).
+-> Information is, the data or collection of data that provide some meaning.
+
+DBMS (Database Management System) 
+---------------------------------
+
+It stands for database management system. It is the application software that will be used to manage the information as the database. You can use other application software also like (ms-excel, notepad, or any file system etc) to manage the information then you may have the below limitation ->
+
+-> Security Problem : Any one can easily read your data without any prior permission. And may be, anyone want to damage your data permanently then you have no option to aviod these kind of problems.
+
+-> Management Of the Information:
+Assume that you have stored 1000 records in file system then it won't be in a proper way because if you want to retrive any record, you have search it one by one explicitly. So it will take more time and give maintanance problem.
+
+-> Data Duplicacy : At the time of storing the data, you can insert the same data multiple time. It is known as data duplicacy and give maintanance problem.
+
+-> Sharing the information : Assume that you are having 10 tables, and you want to share some information in another table then you will get the data sharing problem in simple file system.
+
+So these are some problems, you may get while inserting the data (records) into file system etc. You can solve these problems of the file system by using DBMS.
+
+DBMS (Database Management System): These are the application softwares which are used to manage the records or information in managable way. There are types of DBMS as below:
+
+Object Oriented Database Management System
+Document Oriented Database Management System
+Relational Database Management System
+Graph Oriented Database Management System etc.
+
+DBMS are followed some pre-defined instruction and rules to manage the information by using DBMS. The instructions are known as SQL.
+
+SQL (Structured Query Language)
+-------------------------------
+
+It is the language provided by ANSI (American National Standard Institute). ANSI has provided some predefined rules for the SQL and every databse vendor, or you also need to follow same rules (if you are developing your own database software). SQL is not case sensitive language. SQL can do the following tasks -
+
+-> SQL can execute queries against a database
+-> SQL can retrieve data from a database
+-> SQL can perform CRUD operation in a database
+-> SQL can create new databases
+-> SQL can create new tables in a database
+-> SQL can create stored procedures in a database
+-> SQL can create views in a database
+-> SQL can create the sequence
+-> SQL can set permissions on tables, procedures, and views
+
+
+
+
+
+
+
+
+
+
