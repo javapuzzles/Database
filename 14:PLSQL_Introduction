@@ -15,7 +15,8 @@ It is a concept to provide the collection of statements (sql statements) as bloc
 3)Triggers
 4)Cursors
 
-1)Anonymous Blocks / procedures (Oracle) =========================================
+1)Anonymous Blocks / procedures (Oracle) 
+=========================================
 Syntax:
 --------
 declare
@@ -25,7 +26,9 @@ begin
 end;
 /
 
-To print the message to Console from PL/SQL ------------------------------------------- dbms_output.put('<message>');
+To print the message to Console from PL/SQL 
+------------------------------------------- 
+dbms_output.put('<message>');
 dbms_output.put_line('<message>');
 
 To get the result to console 
@@ -72,7 +75,8 @@ To get the data from KB
 ------------------------ 
 NUMERIC &<varName> CHAR '&<varName>'
 
-Examples For Oracle Only (Anonymous Block) -------------------------------------------- 
+Examples For Oracle Only (Anonymous Block) 
+-------------------------------------------- 
 eg:
 ----
 declare
@@ -204,7 +208,8 @@ If you are defining the PL/SQL block then it will be executed immediately. It wo
 
 If you want to reuse the PL/SQL Block then you need to store the PL/SQL block with some name (using function / procedure). Those procedures are known as Stored Procedure.
 
-Conditional Statements in PL/SQL ---------------------------------
+Conditional Statements in PL/SQL 
+---------------------------------
 1)IF
 
 Syntax:
