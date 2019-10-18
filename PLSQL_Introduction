@@ -1,0 +1,454 @@
+PL/SQL
+------
+(Procedural Language / Structured Query Language) 
+=================================================
+It is a concept to provide the collection of statements (sql statements) as block. In this you can have SQL statements as well as some Procedural Statements.
+
+      Declare Variable
+      Variable Initialization
+      Control Statements
+      Looping Statements
+      etc.
+
+1)Anonymous Blocks / Procedures (Oracle).
+2)Stored Procedures
+3)Triggers
+4)Cursors
+
+1)Anonymous Blocks / procedures (Oracle) =========================================
+Syntax:
+--------
+declare
+ // Variable Declaration
+begin
+ // Statements
+end;
+/
+
+To print the message to Console from PL/SQL ------------------------------------------- dbms_output.put('<message>');
+dbms_output.put_line('<message>');
+
+To get the result to console 
+-----------------------------
+SET SERVEROUTPUT ON;
+
+eg:
+begin
+dbms_output.put('Hai '); 
+dbms_output.put_line('Students '); 
+dbms_output.put('Welcome '); 
+dbms_output.put_line(' to PL/SQL'); dbms_output.put_line('Thnx');
+end;
+/
+
+eg:
+begin
+null;
+end;
+/
+
+eg:
+create table stud25(id int,nm varchar(15));
+begin
+insert into stud25 values(1,'sri'); 
+end;
+/
+
+For Oracle
+-----------
+Declare Variable 
+------------------
+<varName> <dataType>;
+or <varName> <dataType>(<size>);
+
+eg: 	id int;
+---- 	name varchar(25);
+
+Initialize the variable
+-----------------------
+<varName> := <value>;
+
+To get the data from KB 
+------------------------ 
+NUMERIC &<varName> CHAR '&<varName>'
+
+Examples For Oracle Only (Anonymous Block) -------------------------------------------- 
+eg:
+----
+declare
+sid int;
+sname varchar(12);
+begin
+sid := &sid;
+sname := '&sname';
+insert into stud25 values(sid,sname); 
+end;
+/
+
+eg:
+-----
+declare
+sid int;
+sname varchar(15) := 'Shubham';
+city varchar(20);
+begin
+sid := 102;
+insert into stud25 values (sid,sname); 
+end;
+/
+
+eg:
+----
+declare
+a number;
+b number;
+c number;
+begin
+a := &a;
+b := &b;
+c := a + b;
+dbms_output.put_line(c);
+end;
+/
+
+eg:
+declare
+val int := 2;
+nm1 varchar(15) := 'Kishore';
+begin
+insert into stud25 values(val,nm1); 
+end;
+/
+
+eg:
+declare
+sid int := &sid;
+begin
+insert all into stud25 values (sid,'Shubham') into stud25 values (sid,'Raj') select * from dual;
+end;
+/
+
+eg:
+declare
+sid1 int := &sid1;
+sname1 varchar(10) := '&sname1';
+sid2 int := &sid2;
+sname2 varchar(10) := '&sname2';
+begin
+insert all into stud25 values (sid1,sname1) into stud25 values (sid2,sname2) select * from dual;
+end;
+/
+
+eg:
+declare
+s int := &s;
+begin
+delete from stud25 where sid = s;
+end;
+/
+
+eg:
+declare
+val int;
+nm1 varchar(15);
+begin
+val := &val;
+nm1 := '&nm1';
+update student set sid = val, sname = nm1 where sid = 101; end;
+/
+
+** SET SERVEROUTPUT ON
+
+eg:
+declare
+val int;
+nm1 varchar(15);
+begin
+val := &val; //10
+nm1 := '&nm1'; // Subrat
+dbms_output.put(val);
+dbms_output.put(' , ');
+dbms_output.put_line(nm1); 
+dbms_output.put_line(val); 
+dbms_output.put_line(nm1); 
+dbms_output.put_line('ID: '||val||', Name: '||nm1); 
+insert into stud25 values(val,nm1);
+end;
+/
+
+For MySQL
+----------
+Declaring Variables
+-------------------
+Syntax:
+-------
+declare <VariableName> <DataType>;
+
+eg:
+---
+declare sid int;
+declare sname char(10);
+
+Assigning values to variable 
+---------------------------- 
+Syntax:
+-------
+set <VarName> = <value>;
+
+eg:
+---
+set sid = 101;
+set sname = 'subrat';
+
+If you are defining the PL/SQL block then it will be executed immediately. It won't be stored in the DB.
+
+If you want to reuse the PL/SQL Block then you need to store the PL/SQL block with some name (using function / procedure). Those procedures are known as Stored Procedure.
+
+Conditional Statements in PL/SQL ---------------------------------
+1)IF
+
+Syntax:
+--------
+if (<condition>) then
+// Statements
+end if;
+
+2)IF-ELSE
+
+Syntax:
+-----------
+if (<condition>) then
+// Statements
+else
+// Statements
+end if;
+
+
+3)IF-ELSE-IF
+Syntax: (For Oracle)
+----------------------
+if (<condition>) then
+// Statements
+elsif(<condition>) then
+// Statements
+elsif(<condition>) then
+// Statements
+.
+.
+else
+// Statements
+end if;
+
+Syntax: (For MySQL)
+------------------------
+if (<conditiif on>) then
+// Statements
+else if(<condition>) then
+// Statements
+else if(<condition>) then
+// Statements
+.
+.
+else
+// Statements
+end if;
+
+Eg:
+declare
+m1 number := &m1;
+m2 number := &m2;
+m3 number := &m3;
+sm number;
+av number;
+begin
+sm := m1 + m2 + m3;
+av := sm/3;
+dbms_output.put_line('sum='||sm);
+dbms_output.put_line('average='||av);
+
+if (av > 70) then
+	dbms_output.put_line('Result is distinction'); 
+elsif (av > 60 and av < 70) then
+	dbms_output.put_line('Result is firstclass'); 
+elsif (av > 40 and av < 60) then 
+	dbms_output.put_line('Result is secondclass');
+else
+	dbms_output.put_line('Result is failed'); 
+end if;
+end;
+/
+
+Looping statements in PL/SQL
+----------------------------- 
+1)Simple Loop.
+2)While Loop.
+3)For Loop.
+
+1)Simple Loop
+--------------
+Syntax:
+--------
+loop
+// Statements
+exit when(<condition>);
+end loop;
+
+eg1:
+----
+declare
+i number;
+begin
+i := 1;
+loop
+dbms_output.put_line(i);
+i := i+1;
+exit when(i<=26);
+end loop;
+end;
+/
+
+eg2:
+----
+declare
+i number;
+begin
+i := 1;
+loop
+if(i mod 7 = 0) then
+dbms_output.put_line(i);
+end if;
+i := i+1;
+exit when(i > 70);
+end loop;
+end;
+/
+
+eg:
+---
+declare
+i number;
+a number;
+begin
+i := 1;
+loop
+a := i*7;
+dbms_output.put_line(a);
+i := i+1;
+exit when(i > 10);
+end loop;
+end;
+/
+
+2)While Loop
+-------------
+Syntax:
+-------
+while (<condition>)
+loop
+// Statements
+end loop;
+
+eg:
+---
+declare
+i number;
+begin
+i := 1;
+while (i < 26)
+loop
+dbms_output.put_line(i);
+i := i+1;
+end loop;
+end;
+/
+
+eg:
+---
+declare
+i number;
+begin
+i := 1;
+while(i <= 70)
+loop
+if(i mod 7=0) then
+dbms_output.put_line(i);
+end if;
+i := i+1;
+end loop;
+end;
+/
+
+eg:
+----
+declare
+i number;
+a number;
+begin
+i:=1;
+while(i<=10)
+loop
+a:=i*7;
+dbms_output.put_line(a);
+i:=i+1;
+end loop;
+end;
+/
+
+3)For Loop
+-----------
+Syntax:
+--------
+for <varName> in [reverse] <value1>..<value2> loop
+// Statements
+end loop;
+
+eg:
+---
+declare
+begin
+for i in 1..70
+loop
+if (i mod 7 = 0) then
+dbms_output.put_line(i);
+end if;
+end loop;
+end;
+/
+
+eg:
+----
+declare
+begin
+for i in reverse 1..70
+loop
+if (i mod 7=0) then
+dbms_output.put_line(i);
+end if;
+end loop;
+end;
+/
+
+4) While do loop
+-----------------
+For MySQL
+----------
+while(<condition>) do
+// Statements
+end while;
+
+eg:
+----
+declare
+i int := 1
+begin
+while(i < 10) do
+dbms_output.put_line(i);
+i := i+1;
+end while;
+end;
+/
+
+
+
+
+
