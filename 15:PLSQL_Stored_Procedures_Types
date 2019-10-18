@@ -1,0 +1,219 @@
+Stored Procedure
+=================
+For Oracle:
+-----------
+Syntax:
+----------
+create [or replace] procedure <procName> [(<params>)] as/is // Declare the Variable
+begin
+  // Statements
+end; 
+/
+
+
+eg: 
+----
+create procedure p1(a int,b int,c int) as
+sm int;
+av int;
+begin
+sm := a+b+c;
+av := sm/3; 
+dbms_output.put_line('sum='||sm); dbms_output.put_line('average='||av); 
+end;
+/
+
+To Execute The Procedure
+-------------------------
+call p1(10,20,30);
+Output:
+sum=60
+average=20
+
+For MySQL:
+-------------
+delimiter $
+create procedure <procName> ([<params>]) begin
+// declare variables
+// Statements
+end;
+$
+delimiter ;
+
+eg:
+---
+delimiter $
+create procedure proc1()
+begin
+select 'Welcome to Procedures' as "Message"; 
+end;
+$
+delimiter ;
+
+eg:
+---
+delimiter $
+create procedure p2(a int, b int)
+begin
+declare s int;
+set s = a+b;
+select s as 'SUM';
+end;
+$
+delimiter ;
+
+
+create procedure proc3(x int, y int, z int)
+begin
+declare sm int;
+declare av int;
+set sm = x+y+z;
+set av = sm / 3;
+select av as "Average";
+end;
+$
+
+
+To Execute The Procedure
+-------------------------
+call proc1(11,22);
+call p2(10,20);
+
+Note: delimiter is used to change the character to indicate end of the statement.
+
+To See the procedures 
+---------------------- 
+For MySQL
+----------
+show procedure status;
+
+For Oracle
+-------------
+select * from all_objects where object_type in('PROCEDURE');
+
+1) Without Parameter:
+   call showMessage();
+
+To provide the data dynamically into the procedure to perform the operation you can define the parameter.
+
+For Oracle:
+<varName> [<paramType>] <dataType> 
+eg: id IN int
+
+For MySQL:
+[<paramType>] <varName> <dataType> 
+eg: IN id int
+
+Types of Parameter
+----------------------
+      1) INPUT Paremeter
+      2) OUTPUT Parameter
+      3) INPUT - OUTPUT Parameter
+      
+1) INPUT PARAMETER
+-------------------
+You can provide the value to procedure while invoking it.
+
+By Default paremeter type will be input. Optionally you can use IN keyword.
+
+For Oracle
+------------
+eg:
+---
+create or replace procedure p2(a int, b in int) as
+declare
+s int;
+begin
+s := a+b; 
+dbms_output.put_line('SUM = '||s); 
+end;
+/
+-> call p2(10,20);
+
+eg:
+---
+create table proctable(id int, name varchar(15), fee float);
+// Insert some records
+
+
+For MySQL
+----------
+eg:
+---
+delimiter $
+create procedure p3(in a int, in b int)
+begin
+declare s int;
+set s=a+b;
+select s as "SUM";
+end;
+$
+delimiter ;
+->  call p3(12,34);
+
+eg:
+---
+create table proctable(id int primary key auto_increment, name varchar(15), fee float) auto_increment=101;
+// Insert some records
+
+delimiter $
+create procedure Proc4(inst1 int, IN inst2 int)
+begin
+declare s int;
+set s = inst1 + inst2;
+select s as "Result";
+insert into proctable (name, fee) values ('cheenu', s); 
+end;
+$
+delimiter ;
+
+2) OUTPUT Parameter
+--------------------
+You can access the result from the procedure after executing that. You can use OUT keyword to define output parameter.
+
+For Oracle
+------------
+eg:
+---
+create or replace procedure p3(a int, b in int, res out int) as
+begin
+res := a+b;
+dbms_output.put_line('SUM ='||res); 
+end;
+/
+-> var r1 number;
+     call p3(10,20,:r1);
+
+print r1;
+
+-> Use that variable as :r1 (Try to insert the record in some table using this variable)
+
+eg:
+create procedure SumProc(ab int, bc int, res out int) as begin
+res := ab+bc;
+end;
+/
+-> variable s number;
+call SumProc(12,20,:s); 
+print s;
+
+For MySQL
+------------
+eg:
+---
+delimiter $
+create procedure p4(in a int, in b int, out s int) begin
+set s = a+b;
+select s as "SUM";
+end;
+$
+delimiter ;
+
+-> set @r1 = 0;
+     call p4(10,20,@r1);
+select @r1;
+
+
+
+
+
