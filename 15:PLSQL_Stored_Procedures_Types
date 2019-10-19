@@ -213,6 +213,209 @@ delimiter ;
      call p4(10,20,@r1);
 select @r1;
 
+3) INPUT - OUTPUT Parameter
+----------------------------
+By using INPUT-OUTPUT params, you can provide the value while invoking the procedure and access the result also from the procedure.
+
+You can use following keyword to define input output parameter.
+
+IN OUT (Oracle)
+INOUT (MySQL)
+
+For Oracle
+-----------
+eg:
+create or replace procedure p4(a in int,b in out int) as
+begin
+b := b+a;
+dbms_output.put_line('SUM ='||b); 
+end;
+/
+
+eg:
+create procedure SumProc1(ab int, bc IN OUT int) as begin
+bc := ab+bc;
+end;
+/
+-> variable res number;
+     exec :res := 100;
+     call SumProc1(19, :res);
+     print res;//119
+
+eg:
+----
+create or replace procedure updateInfo(sid int, nm OUT varchar, sfe IN OUT float) as
+begin
+update proctable set fee = fee + sfe where id = sid;
+end;
+/
+->   
+var nf number;
+exec :nf := 1000;
+var snm varchar2(15);
+call updateInfo(102,:snm,:nf); 
+print snm;
+print nf;
+
+For MySQL
+------------
+eg:
+---
+delimiter $
+create procedure proc5(in a int,inout b int) begin
+set b=b+a;
+select b as "SUM";
+end;
+$
+delimiter ;
+
+eg:
+---
+delimiter $
+create procedure storeInfo(nm varchar(15), sfee float) 
+begin
+insert into proctable (name,fee) values (nm,sfee); end;
+$
+delimiter ;
+
+
+eg:
+---
+delimiter $
+create procedure updateInfo(sid int, out nm varchar(15), inout sfe float) begin
+update proctable set fee=fee+sfe where id=sid;
+select name, fee into nm, sfe from proctable where id=sid;
+end;
+$
+delimiter ;
+-> set @nf=1000;
+call updateInfo(101,@snm,@nf); select @snm;
+select @nf;
+
+For Oracle:
+------------
+var r2 number;
+exec :r2 := 100;
+call addValue1(10,:r2);
+print r2;
+
+For MySQL:
+------------
+set @r2 = 100;
+call addValue1(10,@r2);
+select @r2;
+
+Examples
+---------
+For Oracle
+-----------
+eg:
+---
+create table student(sid int, m1 int, m2 int, m3 int, sum int, average float, status char(10));
+insert into student(sid,m1,m2,m3) values(101,65,75,85); insert into student(sid,m1,m2,m3) values(102,45,30,45); insert into student(sid,m1,m2,m3) values(103,60,70,90); insert into student(sid,m1,m2,m3) values(104,88,44,44); insert into student(sid,m1,m2,m3) values(105,99,77,66);
+
+Assignement 1 (Oracle) - Without Loop
+Q) Write one StoredProcedure which should collect all the marks of one student from students table and find out his/her status and update the table ?
+
+Assignement 2 (MySQL) - Without Loop
+Q) Write one StoredProcedure which should collect all the marks of one student from students table and find out his/her status and update the table ?
+
+Assignement 3 (Oracle)
+Q) Write one StoredProcedure which should collect all the marks of all the students from students table and find out their status and update the table ?
+
+Assignement 4 (MySQL)
+Q) Write one StoredProcedure which should collect all the marks of all the students from students table and find out their status and update the table ?
+
+Solutions
+=========
+
+create or replace procedure p11(id int) as
+ssd int;
+mm1 int;
+mm2 int;
+mm3 int;
+sm  int;
+avrg float;
+stat char(10);
+begin
+ssd:=id;
+loop
+select m1,m2,m3 into mm1,mm2,mm3 from student where sid=ssd;
+sm:=mm1+mm2+mm3;
+avrg:=sm/3;
+if (avrg>60) then
+stat:='passed';
+else
+stat:='fail';
+end if;
+update student set sum=sm,average=avrg,status=stat where sid=ssd; 
+ssd:=ssd+1;
+exit when(ssd>106);
+end loop;
+end; 
+/
+
+Note: If you want to see errors then
+show err;
+or
+show errors;
+
+For MySQL (Using While do loop) 
+------------------------------- 
+delimiter $
+create procedure updateProc2(sdd int) begin
+declare id int;
+declare mm1 int;
+declare mm2 int;
+declare mm3 int;
+declare sm int;
+declare avrg float;
+declare stat char(10);
+set id=sdd;
+while (id<106) do
+select m1,m2,m3 into mm1,mm2,mm3 from student where sid=id;
+set sm=mm1+mm2+mm3;
+set avrg=sm/3;
+if (avrg>60) then
+set stat='passed';
+else
+set stat='fail';
+end if;
+update student set sum=sm,average=avrg,status=stat where sid=id; set id=id+1;
+end while;
+end;
+$
+delimiter ;
+
+For MySQL (Without using looping statements with same table) 
+------------------------------------------------------------
+delimiter $
+create procedure updateProc1(id int)
+begin
+declare mm1 int;
+declare mm2 int;
+declare mm3 int;
+declare sm int;
+declare avrg float;
+declare stat char(10);
+select m1,m2,m3 into mm1,mm2,mm3 from student where sid=id;
+set sm=mm1+mm2+mm3;
+set avrg=sm/3;
+if (avrg>60) then
+set stat='passed';
+else
+set stat='fail';
+end if;
+update student set sum=sm,average=avrg,status=stat where sid=id; end;
+$
+delimiter ;
+
+Note: drop procedure <procName>;
+
+
+
+
+
 
 
 
