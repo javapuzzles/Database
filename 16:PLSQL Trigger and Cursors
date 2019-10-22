@@ -1,0 +1,208 @@
+Trigger
+=======
+Trigger is a DB object. It is a PL/SQL block that will be executed automatically on the specific events.
+
+root
+customers
+102		B 	b@javapuzzles	38768347	Delhi
+103		C 	c@javapuzzles	44563526	Bangalore
+
+hr_user (update,delete,insert,select)
+customers
+102		B 	b@javapuzzles	38768347	Delhi
+103		C 	zzzzz@javapuzzles	34233324	Bangalore
+
+customers_backup
+101		A 	a@javapuzzles	36872436	Bangalore
+103		C 	c@javapuzzles	44563526	Bangalore
+
+While creating the trigger you need to specify the events that when it will be executed.
+
+The trigger can be used to perform some task automatically depending upon the user operation like insert,update or delete.
+
+Syntax:
+--------
+create [or replace] trigger <triggerName> before/after update/delete/insert
+on <tableName>
+for each row
+
+// For Oracle
+declare
+//Variable declaration
+begin
+statements
+end;
+/
+
+// For MySQL
+delimiter $
+begin
+// Varibale declaration
+// Statements
+end;
+$
+delimiter ;
+
+Properties Available in Oracle ------------------------------- 
+1)To fetch old value 
+---------------------
+:old.<colName>
+
+2)To fetch new value
+--------------------
+:new.<colName>
+
+city
+Bangalore => Delhi
+
+:old.city => Bangalore
+:new.city => Delhi
+
+Properties Available in MySQL 
+----------------------------- 
+1)To fetch old value 
+---------------------
+old.<colName>
+
+2)To fetch new value
+---------------------
+new.<colName>
+
+Example (MySQL)
+---------------------
+Lab1
+-----
+create table triggerdemo (id int primary key, name varchar(12),fee float);
+
+// Insert some records
+
+create table tstudbackup (id int, oname varchar(15), uname varchar(15), ofee float, ufee float, username varchar(15), do_op date, operation varchar(10));
+
+delimiter $
+create trigger trig1 before update on triggerdemo for each row begin
+insert into tstudbackup values (old.id,old.name,new.name,old.fee, new.fee,user(),sysdate(),'UPDATE');
+end;
+$
+delimiter ;
+
+update triggerdemo set id = 111 where id = 101;
+
+-> select * from triggerdemo;
+-> select * from tstudbackup;
+
+Lab2
+-----
+delimiter $
+create trigger trig2 before delete on triggerdemo for each row begin
+insert into tstudbackup values(old.id,old.name,null,old.fee,null, user(),sysdate(),'DELETE');
+end;
+$
+delimiter ;
+
+delete from triggerdemo where id = 103; 
+
+-> select * from triggerdemo;
+-> select * from tstudbackup;
+
+For Oracle:
+-----------
+Lab1
+------
+create trigger trig1 before delete on triggerdemo for each row begin
+insert into tstudbackup values (:old.id,:old.name,null,:old.fee,null,,sysdate,user,'DELETE'); 
+end;
+/
+
+delete from triggerdemo where id = 103; 
+
+-> select * from triggerdemo;
+-> select * from tstudbackup;
+
+Lab2
+------
+create trigger trig2 before update on triggerdemo for each row
+begin
+insert into tstudbackup values(:old.id,:old.name,:new.name,:old.fee,:new.fee,'UPDATE',sysdate,user);
+end;
+/
+
+-> Try to update triggerdemo table and check backup table.
+
+create table student (sid int,m1 int,m2 int,m3 int,sum int,average float, status char(10));
+// Insert some records
+
+create table student_backup (id int,m1 int,m2 int, m3 int, sum int, average float, status varchar(10));
+
+create or replace trigger triggerStudent before delete on student
+for each row
+declare
+id int;
+mm1 int;
+mm2 int;
+mm3 int;
+sm int;
+avrg float;
+stat char(10);
+begin
+id:=:old.sid;
+mm1:=:old.m1;
+mm2:=:old.m2;
+mm3:=:old.m3;
+sm:=:old.sum;
+avrg:=:old.average;
+stat:=:old.status;
+insert into student_backup values(id,mm1,mm2,mm3,sm,avrg,stat); 
+end;
+/
+
+-> delete from student;
+-> select * from student_backup;
+-> If you want to delete the trigger then you can use drop option. 
+eg: drop trigger trig1;
+
+CURSOR (For Oracle Only)
+========================
+-> Used to store the data selected from the table using select statement in stored procedure.
+
+For Oracle:
+-----------
+Syntax:
+----------
+create [or replace] procedure <procName> [(<params>)] as/is cursor <refName> is <selectStatement>;
+// Declare the Variable
+begin
+  // Statements
+end;
+/
+
+Example
+----------
+create table usertable (id int primary key,name varchar(12), role varchar(12));
+insert into usertable values (1,'Sri','EMP'); 
+insert into usertable values (7,'Raj','STUD'); 
+// Insert some record
+
+create table cstudtb (id int primary key, name varchar(14),
+role varchar(12)); 
+
+create table cemptb (id int primary key,name varchar(12),
+role varchar(12));
+
+create or replace procedure filter(userid int) as
+cursor c1 is select * from usertable where id >= userid; begin
+for usr in c1 loop
+if(usr.role='EMP') then
+insert into cemptb values (usr.id,usr.name,'EMP');
+else
+insert into cstudtb values (usr.id,usr.name,'STUD');
+end if;
+end loop;
+end;
+/
+
+*********Happy Ending of Database*********
+
+
+
+
+
