@@ -160,6 +160,17 @@ end;
 -> If you want to delete the trigger then you can use drop option. 
 eg: drop trigger trig1;
 
+Deleting Triggers:
+------------------
+drop trigger <trigger_name>;
+
+i.e: drop trigger trig1;
+
+Note: If you delete table itself for which many triggers are belonging, automatically all associated triggers also will get deleted.
+
+
+
+
 CURSOR (For Oracle Only)
 ========================
 -> Used to store the data selected from the table using select statement in stored procedure.
