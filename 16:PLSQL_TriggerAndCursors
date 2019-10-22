@@ -43,7 +43,8 @@ end;
 $
 delimiter ;
 
-Properties Available in Oracle ------------------------------- 
+Properties Available in Oracle 
+------------------------------- 
 1)To fetch old value 
 ---------------------
 :old.<colName>
